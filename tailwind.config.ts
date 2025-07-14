@@ -61,7 +61,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				cream: 'hsl(var(--cream))',
+				'warm-cream': 'hsl(var(--warm-cream))',
+				chocolate: 'hsl(var(--chocolate))',
+				'soft-green': 'hsl(var(--soft-green))',
+				'warm-border': 'hsl(var(--warm-border))'
+			},
+			fontFamily: {
+				serif: ['Playfair Display', 'Georgia', 'serif'],
+				sans: ['Inter', 'ui-sans-serif', 'system-ui']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
