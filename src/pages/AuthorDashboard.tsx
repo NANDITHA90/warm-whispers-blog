@@ -110,7 +110,7 @@ const AuthorDashboard = () => {
               <p className="text-sm text-muted-foreground mb-4">
                 Don't have any posts yet?
               </p>
-              <Link to="/create" className="btn-accent w-[500px]">
+              <Link to="/create" className="btn-accent w-[900px]">
                 <Plus className="h-4 w-4 mr-2" />
                 Write Your First Story
               </Link>
