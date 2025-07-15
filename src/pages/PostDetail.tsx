@@ -58,14 +58,10 @@ const PostDetail = () => {
       try {
         setLoading(true);
         setError(null);
+        console.log('Fetching post with ID:', id);
         
-        // Add timeout to prevent long loading
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Request timeout')), 3000)
-        );
-        
-        const postPromise = getPostById(id);
-        const postData = await Promise.race([postPromise, timeoutPromise]);
+        const postData = await getPostById(id);
+        console.log('Post fetched:', postData);
         
         if (postData) {
           setPost(postData);
@@ -74,11 +70,7 @@ const PostDetail = () => {
         }
       } catch (error: any) {
         console.error("Error fetching post:", error);
-        if (error.message === 'Request timeout') {
-          setError("Loading is taking longer than expected. Please try again.");
-        } else {
-          setError("Failed to load story. Please try again.");
-        }
+        setError("Failed to load story. Please try again.");
       } finally {
         setLoading(false);
       }
