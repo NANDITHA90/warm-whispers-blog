@@ -21,6 +21,7 @@ const PostDetail = () => {
   const { toast } = useToast();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Map cover images based on tags
   const getCoverImage = (tags: string[] | null) => {
@@ -56,17 +57,35 @@ const PostDetail = () => {
       
       try {
         setLoading(true);
-        const postData = await getPostById(id);
-        setPost(postData);
-      } catch (error) {
-        navigate("/");
+        setError(null);
+        
+        // Add timeout to prevent long loading
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Request timeout')), 3000)
+        );
+        
+        const postPromise = getPostById(id);
+        const postData = await Promise.race([postPromise, timeoutPromise]);
+        
+        if (postData) {
+          setPost(postData);
+        } else {
+          setError("Story not found");
+        }
+      } catch (error: any) {
+        console.error("Error fetching post:", error);
+        if (error.message === 'Request timeout') {
+          setError("Loading is taking longer than expected. Please try again.");
+        } else {
+          setError("Failed to load story. Please try again.");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
-  }, [id, getPostById, navigate]);
+  }, [id, getPostById]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -101,9 +120,37 @@ const PostDetail = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
+          <div className="text-center max-w-md mx-auto">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading story...</p>
+            <p className="text-muted-foreground mb-2">Loading story...</p>
+            <p className="text-sm text-muted-foreground/80">This should only take a moment</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="text-center py-16 max-w-md mx-auto">
+          <h1 className="text-2xl font-serif font-bold text-foreground mb-4">
+            {error.includes("not found") ? "Story Not Found" : "Loading Error"}
+          </h1>
+          <p className="text-muted-foreground mb-8">
+            {error}
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link to="/" className="btn-warm">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Link>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="btn-accent"
+            >
+              Try Again
+            </button>
           </div>
         </div>
       </Layout>
