@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -138,7 +138,7 @@ export const usePosts = () => {
     }
   };
 
-  const getPostById = async (id: string) => {
+  const getPostById = useCallback(async (id: string) => {
     try {
       const { data, error } = await supabase
         .from("posts")
@@ -157,7 +157,7 @@ export const usePosts = () => {
       });
       throw err;
     }
-  };
+  }, [toast]);
 
   const searchPosts = async (query: string) => {
     try {

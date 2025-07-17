@@ -77,7 +77,7 @@ const PostDetail = () => {
     };
 
     fetchPost();
-  }, [id, getPostById]);
+  }, [id]);
 
   const handleShare = async () => {
     if (navigator.share) {
