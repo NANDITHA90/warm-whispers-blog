@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4844c9f3-2057-4322-8b3a-e9b8778369d5) and start prompting.
+Simply visit the [Lovable Project](https://quickblog-warmwhispers.netlify.app/) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
